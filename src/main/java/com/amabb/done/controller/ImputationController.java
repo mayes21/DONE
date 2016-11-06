@@ -36,17 +36,13 @@ public class ImputationController {
 
     private static final Logger _log = Logger.getLogger(ImputationController.class);
 
-    /*@Autowired*/
     ImputationService imputationService;
 
-    /*@Autowired*/
     MessageSource messageSource;
 
 
     JavaMailSender mailSender;
 
-    /*@Autowired
-    CSVFileWriter csvFileWriter;*/
 
     @Autowired
     public ImputationController(ImputationService imputationService, MessageSource messageSource, JavaMailSender mailSender) {
@@ -91,7 +87,6 @@ public class ImputationController {
             List<Imputation> imputations = imputationService.listAllImputations();
             imputationsCSV = new CSVList<>();
             imputationsCSV.addAll(imputations);
-            //csvFileWriter.writeWithCsvBeanWriter(imputationService.listAllImputations());
         } catch (Exception e) {
             _log.error("error creating csv");
             _log.error(e.getMessage());
@@ -99,30 +94,6 @@ public class ImputationController {
 
         String csvFileName = "imputations" + dateOfToday() + ".csv";
         buildCSVFile(httpServletResponse, csvFileName, imputationsCSV);
-        /*httpServletResponse.setContentType("text/csv");
-        String headerKey = "Content-Disposition";
-        String headerValue = String.format("attachment; filename=\"%s\"", csvFileName);
-        httpServletResponse.setHeader(headerKey, headerValue);
-
-        try {
-            httpServletResponse.getWriter().write(imputationsCSV.toCSV());
-        } catch (IOException ioe) {
-            _log.error("error building csv file");
-            _log.error(ioe.getMessage());
-        } catch (IllegalAccessException iae) {
-            _log.error("error building csv file");
-            _log.error(iae.getMessage());
-        }
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(csvFileName);
-            assert imputationsCSV != null;
-            out.write(imputationsCSV.toCSV().getBytes("UTF-8"));
-            out.close();
-        } catch (IllegalAccessException | IOException e) {
-            _log.error(">>>> File not found <<<<");
-            _log.error(e.getMessage());
-        }*/
 
         FileSystemResource csvFile = new FileSystemResource(csvFileName);
         try {
@@ -161,13 +132,7 @@ public class ImputationController {
     }
 
     private void sendEmail(String from, String to, String Subject, FileSystemResource attachment) {
-        /*SimpleMailMessage email = new SimpleMailMessage();
-        email.setFrom(from);
-        email.setTo(to);
-        email.setSubject(Subject);
-        email.setText("test test test amayas");*/
 
-        //mailSender.send(email);
         mailSender.send(new MimeMessagePreparator() {
             @Override
             public void prepare(MimeMessage mimeMessage) throws Exception {

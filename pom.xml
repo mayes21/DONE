@@ -124,13 +124,6 @@
             <version>${log4j.version}</version>
         </dependency>
 
-        <!-- supercsv -->
-        <dependency>
-            <groupId>net.sf.supercsv</groupId>
-            <artifactId>super-csv</artifactId>
-            <version>${supercsv.version}</version>
-        </dependency>
-
         <!-- JavaMail API -->
         <dependency>
             <groupId>javax.mail</groupId>
@@ -138,7 +131,39 @@
             <version>${javamail.version}</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.codehaus.mojo/findbugs-maven-plugin -->
+        <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <version>3.0.4</version>
+        </dependency>
+
     </dependencies>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.4</version>
+                <configuration>
+                    <!--
+                        Enables analysis which takes more memory but finds more bugs.
+                        If you run out of memory, changes the value of the effort element
+                        to 'low'.
+                    -->
+                    <effort>Max</effort>
+                    <!-- Reports all bugs (other values are medium and max) -->
+                    <threshold>Low</threshold>
+                    <!-- Produces XML report -->
+                    <xmlOutput>true</xmlOutput>
+                    <!-- Configures the directory in which the XML report is created -->
+                    <findbugsXmlOutputDirectory>${project.build.directory}/findbugs</findbugsXmlOutputDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
+
 
     <build>
         <pluginManagement>
